@@ -10,33 +10,206 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as GithubRouteImport } from './routes/github'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as ResourcesRouteImport } from './routes/resources'
+import { Route as RobotsDottxtRouteImport } from './routes/robots[.]txt'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as SupportRouteImport } from './routes/support'
+import { Route as TermsRouteImport } from './routes/terms'
+import { Route as ApisIndexRouteImport } from './routes/apis.index'
+import { Route as ApisRealmailproRouteImport } from './routes/apis.realmailpro'
+import { Route as DocsIndexRouteImport } from './routes/docs.index'
+import { Route as DocsRealmailproIndexRouteImport } from './routes/docs.realmailpro.index'
+import { Route as DocsRealmailproSlugRouteImport } from './routes/docs.realmailpro.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GithubRoute = GithubRouteImport.update({
+  id: '/github',
+  path: '/github',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResourcesRoute = ResourcesRouteImport.update({
+  id: '/resources',
+  path: '/resources',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RobotsDottxtRoute = RobotsDottxtRouteImport.update({
+  id: '/robots.txt',
+  path: '/robots.txt',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SupportRoute = SupportRouteImport.update({
+  id: '/support',
+  path: '/support',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApisIndexRoute = ApisIndexRouteImport.update({
+  id: '/apis/',
+  path: '/apis/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApisRealmailproRoute = ApisRealmailproRouteImport.update({
+  id: '/apis/realmailpro',
+  path: '/apis/realmailpro',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DocsIndexRoute = DocsIndexRouteImport.update({
+  id: '/docs/',
+  path: '/docs/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DocsRealmailproIndexRoute = DocsRealmailproIndexRouteImport.update({
+  id: '/docs/realmailpro/',
+  path: '/docs/realmailpro/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DocsRealmailproSlugRoute = DocsRealmailproSlugRouteImport.update({
+  id: '/docs/realmailpro/$slug',
+  path: '/docs/realmailpro/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/github': typeof GithubRoute
+  '/privacy': typeof PrivacyRoute
+  '/resources': typeof ResourcesRoute
+  '/robots.txt': typeof RobotsDottxtRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/support': typeof SupportRoute
+  '/terms': typeof TermsRoute
+  '/apis/realmailpro': typeof ApisRealmailproRoute
+  '/apis/': typeof ApisIndexRoute
+  '/docs/': typeof DocsIndexRoute
+  '/docs/realmailpro/$slug': typeof DocsRealmailproSlugRoute
+  '/docs/realmailpro/': typeof DocsRealmailproIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/github': typeof GithubRoute
+  '/privacy': typeof PrivacyRoute
+  '/resources': typeof ResourcesRoute
+  '/robots.txt': typeof RobotsDottxtRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/support': typeof SupportRoute
+  '/terms': typeof TermsRoute
+  '/apis/realmailpro': typeof ApisRealmailproRoute
+  '/apis': typeof ApisIndexRoute
+  '/docs': typeof DocsIndexRoute
+  '/docs/realmailpro/$slug': typeof DocsRealmailproSlugRoute
+  '/docs/realmailpro': typeof DocsRealmailproIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/github': typeof GithubRoute
+  '/privacy': typeof PrivacyRoute
+  '/resources': typeof ResourcesRoute
+  '/robots.txt': typeof RobotsDottxtRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/support': typeof SupportRoute
+  '/terms': typeof TermsRoute
+  '/apis/realmailpro': typeof ApisRealmailproRoute
+  '/apis/': typeof ApisIndexRoute
+  '/docs/': typeof DocsIndexRoute
+  '/docs/realmailpro/$slug': typeof DocsRealmailproSlugRoute
+  '/docs/realmailpro/': typeof DocsRealmailproIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/github'
+    | '/privacy'
+    | '/resources'
+    | '/robots.txt'
+    | '/sitemap.xml'
+    | '/support'
+    | '/terms'
+    | '/apis/realmailpro'
+    | '/apis/'
+    | '/docs/'
+    | '/docs/realmailpro/$slug'
+    | '/docs/realmailpro/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/about'
+    | '/github'
+    | '/privacy'
+    | '/resources'
+    | '/robots.txt'
+    | '/sitemap.xml'
+    | '/support'
+    | '/terms'
+    | '/apis/realmailpro'
+    | '/apis'
+    | '/docs'
+    | '/docs/realmailpro/$slug'
+    | '/docs/realmailpro'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/github'
+    | '/privacy'
+    | '/resources'
+    | '/robots.txt'
+    | '/sitemap.xml'
+    | '/support'
+    | '/terms'
+    | '/apis/realmailpro'
+    | '/apis/'
+    | '/docs/'
+    | '/docs/realmailpro/$slug'
+    | '/docs/realmailpro/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
+  GithubRoute: typeof GithubRoute
+  PrivacyRoute: typeof PrivacyRoute
+  ResourcesRoute: typeof ResourcesRoute
+  RobotsDottxtRoute: typeof RobotsDottxtRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  SupportRoute: typeof SupportRoute
+  TermsRoute: typeof TermsRoute
+  ApisRealmailproRoute: typeof ApisRealmailproRoute
+  ApisIndexRoute: typeof ApisIndexRoute
+  DocsIndexRoute: typeof DocsIndexRoute
+  DocsRealmailproSlugRoute: typeof DocsRealmailproSlugRoute
+  DocsRealmailproIndexRoute: typeof DocsRealmailproIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +221,115 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/github': {
+      id: '/github'
+      path: '/github'
+      fullPath: '/github'
+      preLoaderRoute: typeof GithubRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/resources': {
+      id: '/resources'
+      path: '/resources'
+      fullPath: '/resources'
+      preLoaderRoute: typeof ResourcesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/robots.txt': {
+      id: '/robots.txt'
+      path: '/robots.txt'
+      fullPath: '/robots.txt'
+      preLoaderRoute: typeof RobotsDottxtRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/support': {
+      id: '/support'
+      path: '/support'
+      fullPath: '/support'
+      preLoaderRoute: typeof SupportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/apis/': {
+      id: '/apis/'
+      path: '/apis'
+      fullPath: '/apis/'
+      preLoaderRoute: typeof ApisIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/apis/realmailpro': {
+      id: '/apis/realmailpro'
+      path: '/apis/realmailpro'
+      fullPath: '/apis/realmailpro'
+      preLoaderRoute: typeof ApisRealmailproRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/docs/': {
+      id: '/docs/'
+      path: '/docs'
+      fullPath: '/docs/'
+      preLoaderRoute: typeof DocsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/docs/realmailpro/': {
+      id: '/docs/realmailpro/'
+      path: '/docs/realmailpro'
+      fullPath: '/docs/realmailpro/'
+      preLoaderRoute: typeof DocsRealmailproIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/docs/realmailpro/$slug': {
+      id: '/docs/realmailpro/$slug'
+      path: '/docs/realmailpro/$slug'
+      fullPath: '/docs/realmailpro/$slug'
+      preLoaderRoute: typeof DocsRealmailproSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
+  GithubRoute: GithubRoute,
+  PrivacyRoute: PrivacyRoute,
+  ResourcesRoute: ResourcesRoute,
+  RobotsDottxtRoute: RobotsDottxtRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
+  SupportRoute: SupportRoute,
+  TermsRoute: TermsRoute,
+  ApisRealmailproRoute: ApisRealmailproRoute,
+  ApisIndexRoute: ApisIndexRoute,
+  DocsIndexRoute: DocsIndexRoute,
+  DocsRealmailproSlugRoute: DocsRealmailproSlugRoute,
+  DocsRealmailproIndexRoute: DocsRealmailproIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

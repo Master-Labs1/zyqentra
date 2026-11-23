@@ -1,0 +1,5 @@
+extends:
+  - recommended
+rules:
+  # Unpublished response shapes are intentionally loose (see UnverifiedObject).
+  no-invalid-media-type-examples: warn

@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "zyqentra-realmailpro"
+version = "0.1.0"
+description = "Pre-release Python client for the RealMailPro API (temporary inboxes and OTP reading)."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "Zyqentra" }]
+dependencies = []
+keywords = ["realmailpro", "temp-mail", "otp", "disposable-email", "api-client"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Typing :: Typed",
+]
+
+[project.urls]
+Documentation = "https://realmailpro.online/docs"
+Source = "https://github.com/Zyqentra/realmailpro-api"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+realmailpro = ["py.typed"]

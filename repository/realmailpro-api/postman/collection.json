@@ -1,0 +1,392 @@
+{
+  "info": {
+    "name": "RealMailPro API (Zyqentra)",
+    "_postman_id": "5b0f6d1e-6a0e-4f43-9a52-4c7a2e9d1b30",
+    "description": "Requests for the RealMailPro public API, written from RealMailPro's published docs (2026-11-23).\n\nSet the `apiKey` collection variable as a secret *current value* — never commit a real key.\nCreate, poll and read requests spend real credits. Example responses are RealMailPro's own published examples; unpublished shapes are marked NEEDS VERIFICATION.\n\nDocs: https://realmailpro.online/docs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{apiKey}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://realmailpro.online/api/public/v1"
+    },
+    {
+      "key": "apiKey",
+      "value": "YOUR_API_KEY",
+      "type": "secret"
+    },
+    {
+      "key": "inboxId",
+      "value": ""
+    },
+    {
+      "key": "messageId",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Account",
+      "item": [
+        {
+          "name": "Get balance",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/account/balance",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "account",
+                "balance"
+              ]
+            },
+            "description": "Wallet balance in credits. Free — use it to confirm your key works.\n\nSource: https://realmailpro.online/docs"
+          },
+          "response": [
+            {
+              "name": "Published example (values elided by RealMailPro)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/account/balance",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "account",
+                    "balance"
+                  ]
+                },
+                "description": "Wallet balance in credits. Free — use it to confirm your key works.\n\nSource: https://realmailpro.online/docs"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{ \"balance\": 104998, \"currency\": \"credits\" }"
+            }
+          ]
+        },
+        {
+          "name": "Get usage",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/account/usage",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "account",
+                "usage"
+              ]
+            },
+            "description": "Last 100 requests and charges. Free. Response schema NEEDS VERIFICATION.\n\nSource: https://realmailpro.online/docs"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Services",
+      "item": [
+        {
+          "name": "List services",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/services",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "services"
+              ]
+            },
+            "description": "Availability and credit price of the four services. Response schema NEEDS VERIFICATION.\n\nSource: https://realmailpro.online/docs"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Inboxes",
+      "item": [
+        {
+          "name": "Create inbox",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/inboxes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "inboxes"
+              ]
+            },
+            "description": "Creates a 10-minute inbox. 1 credit (alias) or 3 credits (original). service: gmail_alias | outlook_alias | gmail_original | outlook_original.\n\nSource: https://realmailpro.online/docs",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"service\": \"gmail_alias\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Published example (values elided by RealMailPro)",
+              "originalRequest": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/inboxes",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "inboxes"
+                  ]
+                },
+                "description": "Creates a 10-minute inbox. 1 credit (alias) or 3 credits (original). service: gmail_alias | outlook_alias | gmail_original | outlook_original.\n\nSource: https://realmailpro.online/docs",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"service\": \"gmail_alias\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{ \"id\": \"8f1c…\", \"address\": \"name+abc@outlook.com\", \"expires_at\": \"…\", \"created_at\": \"…\" }"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "  const body = pm.response.json();",
+                  "  if (body.id) pm.collectionVariables.set('inboxId', body.id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Poll inbox",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/inboxes/{{inboxId}}/messages",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "inboxes",
+                "{{inboxId}}",
+                "messages"
+              ]
+            },
+            "description": "Messages with detected OTP. 3 credits per call — poll at a sensible interval.\n\nSource: https://realmailpro.online/docs"
+          },
+          "response": [
+            {
+              "name": "Published example (values elided by RealMailPro)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/inboxes/{{inboxId}}/messages",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "inboxes",
+                    "{{inboxId}}",
+                    "messages"
+                  ]
+                },
+                "description": "Messages with detected OTP. 3 credits per call — poll at a sensible interval.\n\nSource: https://realmailpro.online/docs"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{ \"inbox\": { \"id\": \"…\", \"address\": \"…\", \"active\": true }, \"data\": [ { \"id\": \"…\", \"from\": \"…\", \"subject\": \"…\", \"otp\": \"482913\", \"received_at\": \"…\" } ] }"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "  const first = (pm.response.json().data || [])[0];",
+                  "  if (first && first.id) pm.collectionVariables.set('messageId', first.id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Messages",
+      "item": [
+        {
+          "name": "Read message",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/messages/{{messageId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "messages",
+                "{{messageId}}"
+              ]
+            },
+            "description": "Full message (text + HTML). 3 credits.\n\nSource: https://realmailpro.online/docs"
+          },
+          "response": [
+            {
+              "name": "Published example (values elided by RealMailPro)",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/messages/{{messageId}}",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "messages",
+                    "{{messageId}}"
+                  ]
+                },
+                "description": "Full message (text + HTML). 3 credits.\n\nSource: https://realmailpro.online/docs"
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{ \"id\": \"…\", \"to\": \"…\", \"from\": \"…\", \"subject\": \"…\", \"text\": \"…\", \"html\": \"…\", \"otp\": \"482913\" }"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
