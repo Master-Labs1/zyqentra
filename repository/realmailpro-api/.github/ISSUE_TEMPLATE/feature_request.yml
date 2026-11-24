@@ -1,0 +1,27 @@
+name: Feature request
+description: Suggest an improvement to the SDKs, examples or docs in this repository.
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This repository covers client code and documentation only. Changes to the RealMailPro service itself
+        (new endpoints, webhooks, limits) need RealMailPro — we will only document them once they are published.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What are you trying to do?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+    validations:
+      required: true
+  - type: textarea
+    id: source
+    attributes:
+      label: Source for API behaviour
+      description: Link to RealMailPro's published documentation if the request depends on API behaviour.

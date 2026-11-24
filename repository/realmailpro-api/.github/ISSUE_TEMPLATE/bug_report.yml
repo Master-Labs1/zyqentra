@@ -1,0 +1,50 @@
+name: Bug report
+description: Something in the SDKs, examples, OpenAPI spec or docs is wrong.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Never paste an API key, inbox address, message content or OTP.** Replace them with `YOUR_API_KEY`, `INBOX_ID`, etc.
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options: [TypeScript SDK, Python SDK, OpenAPI spec, Postman collection, Examples, Documentation]
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: SDK / repository version
+      placeholder: "0.1.0"
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: Include the HTTP status and the `error.code` if you got one.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Minimal reproduction (redacted)
+      render: text
+  - type: input
+    id: env
+    attributes:
+      label: Runtime
+      placeholder: "Node 20 / Python 3.12 / OS"
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checks
+      options:
+        - label: I removed all API keys, addresses, message bodies and codes from this report.
+          required: true

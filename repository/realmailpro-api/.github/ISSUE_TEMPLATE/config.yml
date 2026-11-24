@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security vulnerability
+    url: mailto:support@realmailpro.online
+    about: Report security issues privately — never in a public issue. See SECURITY.md.
+  - name: Account, billing or API key help
+    url: https://realmailpro.online
+    about: Questions about your RealMailPro account, deposits or keys go to RealMailPro support.
