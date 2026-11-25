@@ -7,7 +7,8 @@ export const REPO_TREE: { path: string; note: string; depth: number }[] = [
   { path: "sdk/python/", note: "Python client · pre-release", depth: 0 },
   { path: "examples/", note: "cURL, JavaScript, TypeScript, Python", depth: 0 },
   { path: "postman/collection.json", note: "Postman v2.1 collection", depth: 0 },
-  { path: ".github/", note: "CI, CodeQL, Dependabot, templates", depth: 0 },
+  { path: ".github/", note: "CI, CodeQL, dependency review, Dependabot, issue & PR templates, brand assets", depth: 0 },
+  { path: "RELEASING.md · .env.example", note: "Release checklist and safe env template", depth: 0 },
   { path: "SECURITY.md · CONTRIBUTING.md · LICENSE", note: "Community & policy files", depth: 0 },
 ];
 

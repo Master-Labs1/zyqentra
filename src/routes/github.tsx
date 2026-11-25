@@ -19,12 +19,14 @@ export const Route = createFileRoute("/github")({
   component: GithubPage,
 });
 
-const PHASES = [
-  { t: "Build the developer portal", done: true },
-  { t: "Prepare repository files", done: true },
-  { t: "Security scan and content review", done: true },
-  { t: "Verify API docs against a live key", done: false },
-  { t: "Owner approval to make the repository public", done: false },
+type PhaseState = "done" | "blocked" | "pending";
+const PHASES: { t: string; state: PhaseState; note?: string }[] = [
+  { t: "Build the developer portal", state: "done" },
+  { t: "Prepare repository files (in this project)", state: "done" },
+  { t: "Local secret scan, dependency audit and content review", state: "done", note: "Run 2026-11-24 on the prepared files. GitHub-side scanning starts once the repository exists." },
+  { t: "Create the private repository on GitHub", state: "blocked", note: "The Zyqentra organization restricts third-party app access; the owner must approve the app first." },
+  { t: "Verify API docs against a live key", state: "pending" },
+  { t: "Owner approval to make the repository public", state: "pending" },
 ];
 
 const CI = [
@@ -33,7 +35,8 @@ const CI = [
   "OpenAPI lint with Redocly",
   "Postman collection JSON validation",
   "Markdown link check",
-  "CodeQL for JavaScript/TypeScript and Python · Dependabot",
+  "CodeQL for JavaScript/TypeScript and Python",
+  "Dependency review on pull requests · Dependabot (npm, pip, Actions)",
 ];
 
 function GithubPage() {
@@ -97,8 +100,14 @@ function GithubPage() {
             <ol className="mt-5 space-y-3 text-sm">
               {PHASES.map((p, i) => (
                 <li key={p.t} className="flex gap-3">
-                  <span className={p.done ? "text-success" : "text-subtle"}>{p.done ? "✓" : <CircleDashed className="inline size-4" />}</span>
-                  <span className={p.done ? "" : "text-muted-foreground"}>{i + 1}. {p.t}</span>
+                  <span className={p.state === "done" ? "text-success" : p.state === "blocked" ? "text-warning" : "text-subtle"}>
+                    {p.state === "done" ? "✓" : p.state === "blocked" ? "!" : <CircleDashed className="inline size-4" />}
+                  </span>
+                  <span className={p.state === "done" ? "" : "text-muted-foreground"}>
+                    {i + 1}. {p.t}
+                    {p.state === "blocked" && <span className="ml-1 text-xs text-warning">(blocked)</span>}
+                    {p.note && <span className="mt-0.5 block text-xs text-subtle">{p.note}</span>}
+                  </span>
                 </li>
               ))}
             </ol>

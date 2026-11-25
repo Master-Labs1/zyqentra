@@ -1,12 +1,12 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/Zyqentra/realmailpro-api/main/.github/assets/zyqentra-mark.svg" alt="Zyqentra logo" width="64" height="64" />
+<img src=".github/assets/banner.svg" alt="Zyqentra — RealMailPro API developer kit" width="100%" />
 
 # RealMailPro API — Developer Kit
 
 **Temporary Gmail.com & Outlook.com inboxes and OTP reading, from your own code.**
 
-Documentation, OpenAPI spec, SDK sources and examples for the [RealMailPro](https://realmailpro.online) API,
+Documentation, OpenAPI spec, TypeScript & Python SDK sources and examples for the [RealMailPro](https://realmailpro.online) API,
 maintained by **Zyqentra** — *Build beyond limits.*
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-c6f432?style=flat-square)](LICENSE)
@@ -14,7 +14,7 @@ maintained by **Zyqentra** — *Build beyond limits.*
 [![API v1](https://img.shields.io/badge/API-v1-15171c?style=flat-square)](https://realmailpro.online/docs)
 [![Status: pre-release](https://img.shields.io/badge/status-pre--release-f5a524?style=flat-square)](#status)
 
-[Docs](docs/getting-started.md) · [API reference](docs/api-reference.md) · [OpenAPI](openapi/openapi.yaml) · [Postman](postman/collection.json) · [Official docs](https://realmailpro.online/docs)
+[Quick start](#quick-start) · [Endpoints](#endpoints) · [SDKs](#sdks) · [Pricing](#credit-pricing) · [Errors](#error-handling) · [FAQ](#faq) · [Official docs](https://realmailpro.online/docs)
 
 </div>
 
@@ -39,6 +39,12 @@ documentation. Anything RealMailPro has not published is marked **NEEDS VERIFICA
 | TypeScript SDK (`sdk/javascript`) | Implemented, mock-tested · **not on npm** |
 | Python SDK (`sdk/python`) | Implemented, mock-tested · **not on PyPI** |
 | Webhooks | Not offered |
+
+## How it works
+
+<img src=".github/assets/architecture.svg" alt="Your server or CI uses the SDK to call the RealMailPro API over HTTPS with a Bearer key" width="100%" />
+
+<img src=".github/assets/workflow.svg" alt="Create inbox, use the address in your sign-up form, poll messages, read the OTP" width="100%" />
 
 ## Quick start
 
@@ -73,6 +79,15 @@ Base URL: `https://realmailpro.online/api/public/v1`
 | `GET` | `/account/usage` | Last 100 requests | free |
 
 Services: `gmail_alias`, `outlook_alias`, `gmail_original`, `outlook_original`.
+
+## Credit pricing
+
+Published by RealMailPro on the [Developer API page](https://realmailpro.online/developer-api):
+
+- Prepaid wallet: **$1 = 1,000 credits**, minimum deposit **$10** (USDT BEP20). Credits do not expire.
+- Create inbox: **1 credit** (alias) or **3 credits** (original). Poll inbox or read message: **3 credits** each.
+- Balance and usage endpoints are free. Failed billable calls are refunded automatically.
+- Deposit bonuses per deposit range from 5% ($10) to 70% ($15,000) — see RealMailPro for current tiers.
 
 ## Examples
 
@@ -154,7 +169,7 @@ Limits are per key, per minute. The numbers are not published — see [docs/rate
 | TypeScript / JavaScript | [`sdk/javascript`](sdk/javascript) | `npm install && npm run build` | Pre-release, not on npm |
 | Python 3.9+ | [`sdk/python`](sdk/python) | `pip install -e sdk/python` | Pre-release, not on PyPI |
 
-Both have zero runtime dependencies, typed errors, request timeouts and safe retries.
+Both have zero runtime dependencies, typed errors, request timeouts and safe retries. Guides: [TypeScript](sdk/javascript/README.md) · [Python](sdk/python/README.md).
 
 ## Postman
 
@@ -169,8 +184,19 @@ openapi/     OpenAPI 3.1 description (published endpoints only)
 sdk/         TypeScript and Python clients
 examples/    cURL, JavaScript, TypeScript, Python
 postman/     Postman v2.1 collection
-.github/     CI, CodeQL, Dependabot, issue & PR templates
+.github/     CI, CodeQL, dependency review, Dependabot, issue & PR templates, brand assets
 ```
+
+## FAQ
+
+**Is RealMailPro free?** The website has a free tier; the API is prepaid ($10 minimum deposit).
+**Can I call it from the browser?** No. The API allows CORS, but that would expose your key. Use a server or CI.
+**Are there webhooks?** Not offered. Poll `GET /inboxes/{id}/messages` (3 credits per poll) and keep polling intervals sensible.
+**Are the SDKs on npm / PyPI?** Not yet. Build from source; publication needs owner approval.
+**What are the rate limits?** Per key, per minute — exact numbers are **not published** (NEEDS VERIFICATION).
+**What may I use it for?** Inboxes and accounts you own or are authorised to test. No spam, abuse or circumventing other services' rules.
+
+More in [docs/faq.md](docs/faq.md).
 
 ## Changelog · Contributing · Security · Support
 
@@ -178,6 +204,8 @@ postman/     Postman v2.1 collection
 - [CONTRIBUTING.md](CONTRIBUTING.md) — how to propose changes; no unverified API claims.
 - [SECURITY.md](SECURITY.md) — report vulnerabilities privately.
 - [SUPPORT.md](SUPPORT.md) — where to ask for help.
+- [RELEASING.md](RELEASING.md) — versioning and release checklist (no package publication without owner approval).
+- Security contact: **support@realmailpro.online**
 
 ## License & trademarks
 

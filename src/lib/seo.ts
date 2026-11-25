@@ -19,9 +19,12 @@ type SeoInput = {
 
 /** Builds per-route head(): unique title/description, OG/Twitter, canonical and optional JSON-LD. */
 export function seo({ path, title, description, matches, noindex, type = "website", jsonLd }: SeoInput) {
-  const origin = originFromMatches(matches);
+  const servingOrigin = originFromMatches(matches);
+  const origin = SITE.productionOrigin;
+  // Preview / temporary hosts are never indexed; only the production domain is.
+  const isProduction = servingOrigin === "" || servingOrigin === SITE.productionOrigin;
   const fullTitle = path === "/" ? title : `${title} · ${SITE.name}`;
-  const canonical = origin ? `${origin}${path}` : undefined;
+  const canonical = `${origin}${path}`;
   const meta: Record<string, string>[] = [
     { title: fullTitle },
     { name: "description", content: description },
@@ -32,9 +35,12 @@ export function seo({ path, title, description, matches, noindex, type = "websit
     { name: "twitter:card", content: "summary_large_image" },
     { name: "twitter:title", content: fullTitle },
     { name: "twitter:description", content: description },
+    { property: "og:image", content: SITE.socialImage },
+    { name: "twitter:image", content: SITE.socialImage },
+    { property: "og:image:alt", content: "Zyqentra — RealMailPro API developer kit" },
   ];
   if (canonical) meta.push({ property: "og:url", content: canonical });
-  if (noindex) meta.push({ name: "robots", content: "noindex, follow" });
+  if (noindex || !isProduction) meta.push({ name: "robots", content: "noindex, follow" });
   return {
     meta,
     links: canonical ? [{ rel: "canonical", href: canonical }] : [],
@@ -45,14 +51,14 @@ export function seo({ path, title, description, matches, noindex, type = "websit
   };
 }
 
-export function breadcrumbLd(origin: string, items: { name: string; path: string }[]) {
+export function breadcrumbLd(_servingOrigin: string, items: { name: string; path: string }[]) {
   return {
     "@type": "BreadcrumbList",
     itemListElement: items.map((it, i) => ({
       "@type": "ListItem",
       position: i + 1,
       name: it.name,
-      ...(origin ? { item: `${origin}${it.path}` } : {}),
+      item: `${SITE.productionOrigin}${it.path}`,
     })),
   };
 }

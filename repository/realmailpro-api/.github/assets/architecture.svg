@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="260" viewBox="0 0 960 260" role="img" aria-label="Architecture: your server or CI uses the SDK to call the RealMailPro API over HTTPS with a Bearer key">
+<rect width="960" height="260" rx="16" fill="#0f1115"/>
+<g font-family="Geist, Inter, Arial, sans-serif" fill="#f4f5f7">
+<rect x="30" y="70" width="230" height="120" rx="12" fill="#15171c" stroke="#2a2d35"/><text x="50" y="110" font-size="20" font-weight="600">Your server / CI</text><text x="50" y="140" font-size="14" fill="#9ca3af">REALMAILPRO_API_KEY</text><text x="50" y="162" font-size="14" fill="#9ca3af">in env, never in browser</text>
+<rect x="365" y="70" width="230" height="120" rx="12" fill="#15171c" stroke="#c6f432"/><text x="385" y="110" font-size="20" font-weight="600">Zyqentra SDK</text><text x="385" y="140" font-size="14" fill="#9ca3af">TypeScript · Python</text><text x="385" y="162" font-size="14" fill="#9ca3af">timeouts · GET-only retries</text>
+<rect x="700" y="70" width="230" height="120" rx="12" fill="#15171c" stroke="#ff7a59"/><text x="720" y="110" font-size="20" font-weight="600">RealMailPro API</text><text x="720" y="140" font-size="14" fill="#9ca3af">/api/public/v1</text><text x="720" y="162" font-size="14" fill="#9ca3af">proprietary service</text>
+<path d="M265 130h92M600 130h92" stroke="#c6f432" stroke-width="2" marker-end="url(#a)"/>
+<text x="610" y="118" font-size="12" fill="#9ca3af">HTTPS + Bearer</text></g>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10z" fill="#c6f432"/></marker></defs>
+</svg>

@@ -1,0 +1,294 @@
+openapi: 3.1.0
+info:
+  title: RealMailPro API
+  version: "1.0.0-docs.0.1.0"
+  summary: Temporary Gmail.com and Outlook.com inboxes with OTP detection.
+  description: |
+    Community-maintained description of the RealMailPro public API, written by Zyqentra
+    from RealMailPro's published documentation (https://realmailpro.online/docs) on 2026-11-23.
+
+    Verification status:
+    - Paths, methods, auth headers, service names and error codes are taken from RealMailPro's docs.
+    - The base URL and the 401 error envelope were observed live without a key.
+    - No successful authenticated call has been made. Response schemas follow RealMailPro's
+      published examples; anything not shown there is marked NEEDS VERIFICATION.
+    - Rate-limit numbers and headers are not published.
+
+    The RealMailPro service is proprietary. This file describes its public interface only.
+  contact:
+    name: Zyqentra
+    email: support@realmailpro.online
+  license:
+    name: MIT
+    identifier: MIT
+externalDocs:
+  description: RealMailPro official API documentation
+  url: https://realmailpro.online/docs
+servers:
+  - url: https://realmailpro.online/api/public/v1
+    description: Production (published base URL)
+security:
+  - bearerAuth: []
+  - apiKeyHeader: []
+tags:
+  - name: Services
+    description: Available email services and prices.
+  - name: Inboxes
+    description: Create temporary inboxes and poll them for messages.
+  - name: Messages
+    description: Read full message content.
+  - name: Account
+    description: Wallet balance and usage. Free of charge.
+paths:
+  /services:
+    get:
+      operationId: listServices
+      tags: [Services]
+      summary: List services
+      description: Lists the four email services, their availability and credit price. Charge not stated.
+      responses:
+        "200":
+          description: Services list. Schema NEEDS VERIFICATION.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnverifiedObject"
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Suspended" }
+        "429": { $ref: "#/components/responses/RateLimited" }
+  /inboxes:
+    post:
+      operationId: createInbox
+      tags: [Inboxes]
+      summary: Create inbox
+      description: |
+        Creates a temporary inbox that expires after 10 minutes. Costs 1 credit (alias) or 3 credits (original).
+        Not documented as idempotent — do not retry automatically.
+      requestBody:
+        required: true
+        description: RealMailPro's published cURL example omits the body; whether `service` has a default NEEDS VERIFICATION.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateInboxRequest"
+            example:
+              service: gmail_alias
+      responses:
+        "200":
+          description: Inbox created. Success status code (200 vs 201) NEEDS VERIFICATION.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Inbox"
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "402": { $ref: "#/components/responses/InsufficientCredits" }
+        "403": { $ref: "#/components/responses/Suspended" }
+        "429": { $ref: "#/components/responses/RateLimited" }
+        "502": { $ref: "#/components/responses/UpstreamError" }
+  /inboxes/{id}/messages:
+    get:
+      operationId: listInboxMessages
+      tags: [Inboxes]
+      summary: Poll inbox
+      description: Fetches new mail and returns messages with the detected OTP. Costs 3 credits.
+      parameters:
+        - $ref: "#/components/parameters/InboxId"
+      responses:
+        "200":
+          description: Inbox and its messages.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InboxMessages"
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "402": { $ref: "#/components/responses/InsufficientCredits" }
+        "403": { $ref: "#/components/responses/Suspended" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "429": { $ref: "#/components/responses/RateLimited" }
+        "502": { $ref: "#/components/responses/UpstreamError" }
+  /messages/{id}:
+    get:
+      operationId: getMessage
+      tags: [Messages]
+      summary: Read message
+      description: Returns the full message (text and HTML) for a message from one of your inboxes. Costs 3 credits.
+      parameters:
+        - $ref: "#/components/parameters/MessageId"
+      responses:
+        "200":
+          description: Full message.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Message"
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "402": { $ref: "#/components/responses/InsufficientCredits" }
+        "403": { $ref: "#/components/responses/Suspended" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "429": { $ref: "#/components/responses/RateLimited" }
+        "502": { $ref: "#/components/responses/UpstreamError" }
+  /account/balance:
+    get:
+      operationId: getBalance
+      tags: [Account]
+      summary: Get balance
+      description: Wallet balance in credits. No charge.
+      responses:
+        "200":
+          description: Balance.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Balance"
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Suspended" }
+        "429": { $ref: "#/components/responses/RateLimited" }
+  /account/usage:
+    get:
+      operationId: getUsage
+      tags: [Account]
+      summary: Get usage
+      description: Your last 100 requests and charges. No charge.
+      responses:
+        "200":
+          description: Usage. Schema NEEDS VERIFICATION.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnverifiedObject"
+        "401": { $ref: "#/components/responses/Unauthorized" }
+        "403": { $ref: "#/components/responses/Suspended" }
+        "429": { $ref: "#/components/responses/RateLimited" }
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: "`Authorization: Bearer YOUR_API_KEY`. Published examples show keys starting with `rmp_live_`."
+    apiKeyHeader:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: Alternative header documented by RealMailPro.
+  parameters:
+    InboxId:
+      name: id
+      in: path
+      required: true
+      description: Inbox id returned by createInbox. Format NEEDS VERIFICATION.
+      schema: { type: string, minLength: 1 }
+    MessageId:
+      name: id
+      in: path
+      required: true
+      description: Message id from listInboxMessages. Format NEEDS VERIFICATION.
+      schema: { type: string, minLength: 1 }
+  schemas:
+    ServiceName:
+      type: string
+      enum: [gmail_alias, outlook_alias, gmail_original, outlook_original]
+    CreateInboxRequest:
+      type: object
+      required: [service]
+      properties:
+        service: { $ref: "#/components/schemas/ServiceName" }
+    Inbox:
+      type: object
+      required: [id, address, expires_at, created_at]
+      properties:
+        id: { type: string }
+        address: { type: string, examples: ["name+abc@outlook.com"] }
+        expires_at: { type: string, description: Timestamp. Format NEEDS VERIFICATION. }
+        created_at: { type: string, description: Timestamp. Format NEEDS VERIFICATION. }
+    InboxRef:
+      type: object
+      properties:
+        id: { type: string }
+        address: { type: string }
+        active: { type: boolean }
+    MessageSummary:
+      type: object
+      properties:
+        id: { type: string }
+        from: { type: string }
+        subject: { type: string }
+        otp:
+          type: [string, "null"]
+          description: Detected code. Value when nothing is detected NEEDS VERIFICATION.
+          examples: ["482913"]
+        received_at: { type: string }
+    InboxMessages:
+      type: object
+      required: [inbox, data]
+      properties:
+        inbox: { $ref: "#/components/schemas/InboxRef" }
+        data:
+          type: array
+          items: { $ref: "#/components/schemas/MessageSummary" }
+    Message:
+      type: object
+      properties:
+        id: { type: string }
+        to: { type: string }
+        from: { type: string }
+        subject: { type: string }
+        text: { type: string }
+        html: { type: string, description: Untrusted HTML — sanitize before rendering. }
+        otp: { type: [string, "null"] }
+    Balance:
+      type: object
+      required: [balance, currency]
+      properties:
+        balance: { type: integer, examples: [104998] }
+        currency: { type: string, examples: [credits] }
+    UnverifiedObject:
+      description: Schema not published by RealMailPro. NEEDS VERIFICATION.
+      oneOf:
+        - type: object
+          additionalProperties: true
+        - type: array
+          items: {}
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: object
+          required: [code, message]
+          properties:
+            code:
+              type: string
+              enum: [unauthorized, insufficient_credits, suspended, not_found, rate_limited, upstream_error]
+            message: { type: string }
+  responses:
+    Unauthorized:
+      description: Missing, invalid or revoked key (body observed live).
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+          example: { error: { code: unauthorized, message: Missing or invalid API key. } }
+    InsufficientCredits:
+      description: Not enough credits. Body assumed to use the same envelope (NEEDS VERIFICATION).
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+    Suspended:
+      description: Account under review.
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+    NotFound:
+      description: Inbox/message is not yours, or unknown endpoint.
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+    RateLimited:
+      description: Too many requests per minute for this key. Limit values and headers NEEDS VERIFICATION.
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }
+    UpstreamError:
+      description: Mail service failed. Not charged.
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Error" }

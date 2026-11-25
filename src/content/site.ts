@@ -11,6 +11,10 @@ export const SITE = {
   /** Repository is prepared but private; never link to it as public until the owner approves. */
   repoVisibility: "private-pending" as "private-pending" | "public",
   license: "MIT",
+  /** Planned production domain. Canonical URLs point here; it is NOT claimed live until DNS + deployment are verified. */
+  productionOrigin: "https://developers.zyqentra.com",
+  /** Absolute social image (served from the published Lovable URL until the production domain is live). */
+  socialImage: "https://zyqentra.lovable.app/__l5e/assets-v1/7ecf319c-5571-45d7-80ed-dc8d7605a8a8/zyqentra-social.png",
 } as const;
 
 export const NAV = [

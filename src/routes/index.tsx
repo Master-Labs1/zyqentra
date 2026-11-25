@@ -15,7 +15,7 @@ import { originFromMatches, seo } from "@/lib/seo";
 
 export const Route = createFileRoute("/")({
   head: ({ matches }) => {
-    const origin = originFromMatches(matches);
+    const origin = originFromMatches(matches) && "https://developers.zyqentra.com";
     return seo({
       path: "/",
       title: "Zyqentra — Developer Infrastructure for RealMailPro",

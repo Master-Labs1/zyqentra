@@ -7,6 +7,11 @@ This file tracks the docs, SDKs and tooling in this repository — not changes t
 
 ## [Unreleased]
 
+### Added
+- GitHub Actions: CI (TypeScript, Python 3.9/3.12, OpenAPI lint, Postman JSON, Markdown links), CodeQL, dependency review; Dependabot config.
+- Issue templates (bug, feature, docs correction), PR template, `RELEASING.md`, `.env.example`.
+- SDK READMEs, README banner, architecture and workflow diagrams, social preview image.
+
 ## [0.1.0] - 2026-11-23
 
 ### Added
@@ -14,7 +19,6 @@ This file tracks the docs, SDKs and tooling in this repository — not changes t
 - OpenAPI 3.1 description with unpublished details marked NEEDS VERIFICATION.
 - Pre-release TypeScript SDK (`sdk/javascript`) and Python SDK (`sdk/python`) with unit tests against a mocked API.
 - Postman v2.1 collection, cURL/JavaScript/TypeScript/Python examples.
-- CI (tests, type check, OpenAPI lint, JSON validation, link check), CodeQL and Dependabot.
 
 ### Not yet verified
 - Successful authenticated responses, rate-limit values, `/services` and `/account/usage` schemas.
