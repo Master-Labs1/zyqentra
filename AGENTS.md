@@ -1,35 +1,48 @@
-<!-- LOVABLE:BEGIN -->
-> [!IMPORTANT]
-> This project is connected to [Lovable](https://lovable.dev). Avoid rewriting
-> published git history — force pushing, or rebasing/amending/squashing commits
-> that are already pushed — as it rewrites history on Lovable's side and the
-> user will likely lose their project history.
->
-> Commits you push to the connected branch sync back to Lovable and show up in
-> the editor, so keep the branch in a working state.
+Engineering Standards
 
-## What Lovable manages
+This project follows a structured, maintainable, and production-oriented software engineering approach.
 
-Rules outside this block are the project's own. Change the pieces below in
-Lovable, not by hand. With the [Lovable MCP](https://mcp.lovable.dev)
-connected, `send_message` asks Lovable to do it; otherwise ask the user to
-use the editor.
+Architecture & Code Quality
 
-- **Database.** Do not add or edit `supabase/migrations/` or `drizzle/`.
-  Ask Lovable to change the schema.
-- **Generated files.** Do not edit a file whose header says it is automatically
-  generated.
-- **AI gateway.** Keep model calls on Lovable's gateway, and keep
-  `LOVABLE_API_KEY` out of browser code.
-- **Connectors.** Lovable provides native connectors. `list_connectors` shows
-  which are enabled; `add_connector` only returns the dashboard link. When a
-  connector is enabled, calls go through the connector gateway and need
-  `LOVABLE_API_KEY`. When Lovable does not provide one, users can bring their
-  own key and store it in Secrets.
-- **Secrets.** Lovable manages them. Do not put secret values in the repo.
-<!-- LOVABLE:END -->
+- Maintain clean, modular, scalable and maintainable code.
+- Follow established React, TypeScript and modern web development conventions.
+- Use reusable components and clear separation of concerns.
+- Avoid unnecessary dependencies, duplicated logic and temporary workarounds.
+- Preserve existing functionality when implementing changes.
 
-## Project rules
-- Canonical URLs, sitemap and JSON-LD always use `SITE.productionOrigin`; robots.txt and meta robots block indexing on every other host — preview URLs must never be indexed.
-- `public/downloads/*` are copies of `repository/realmailpro-api` files; `src/test/downloads.test.ts` fails if they drift — re-copy after editing the spec or collection.
-- `repository/` holds files destined for GitHub (not app code); it is not part of the app build.
+SEO & Domain Configuration
+
+- Canonical URLs, sitemap and JSON-LD must always use "SITE.productionOrigin".
+- Search engine indexing must be enabled only for the production domain.
+- Preview and development environments must remain excluded from indexing.
+- Maintain accurate metadata, structured data and canonical references.
+
+Repository & API Documentation
+
+- The "repository/" directory contains source files intended for public GitHub distribution and is excluded from the application build.
+- "public/downloads/*" must remain synchronized with their corresponding files in "repository/realmailpro-api".
+- After modifying API specifications or Postman collections, update their downloadable copies.
+- Always run "src/test/downloads.test.ts" to verify synchronization.
+- Keep API documentation, examples and SDK instructions accurate and consistent.
+
+Security & Configuration
+
+- Never expose private credentials, API keys or service-role keys in client-side code.
+- Keep environment variables and secrets outside version control.
+- Follow secure authentication, authorization and data-handling practices.
+- Validate external inputs and handle errors safely.
+
+Testing & Releases
+
+- Run relevant tests after every significant change.
+- Resolve TypeScript errors and build failures before releases.
+- Avoid breaking changes without proper documentation.
+- Keep the main branch stable and functional.
+- Never rewrite published Git history or force-push without explicit authorization.
+
+Development Principles
+
+- Prioritize reliability, security, performance and accessibility.
+- Make changes only when they provide measurable value.
+- Do not fabricate features, API capabilities, test results or production readiness.
+- Document limitations and unverified functionality transparently.
