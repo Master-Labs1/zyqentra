@@ -90,7 +90,7 @@ export function DocsShell({ page }: { page: DocPage }) {
   const { prev, next } = getNeighbors(page.slug);
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6">
-      <div className="grid gap-10 lg:grid-cols-[230px_minmax(0,1fr)] xl:grid-cols-[230px_minmax(0,1fr)_200px]">
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-10 lg:grid-cols-[230px_minmax(0,1fr)] xl:grid-cols-[230px_minmax(0,1fr)_200px]">
         <aside className="sticky top-16 hidden h-[calc(100vh-4rem)] overflow-y-auto py-8 pr-2 lg:block">
           <div className="mb-6 px-3">
             <RealMailProMark className="text-sm" />

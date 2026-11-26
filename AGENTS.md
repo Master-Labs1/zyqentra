@@ -28,3 +28,8 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Project rules
+- Canonical URLs, sitemap and JSON-LD always use `SITE.productionOrigin`; robots.txt and meta robots block indexing on every other host — preview URLs must never be indexed.
+- `public/downloads/*` are copies of `repository/realmailpro-api` files; `src/test/downloads.test.ts` fails if they drift — re-copy after editing the spec or collection.
+- `repository/` holds files destined for GitHub (not app code); it is not part of the app build.

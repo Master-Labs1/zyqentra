@@ -99,7 +99,7 @@ export function DocBlocks({ blocks }: { blocks: Block[] }) {
             return (
               <div key={i} className="flex flex-wrap items-center gap-3 rounded-xl border border-border bg-surface px-4 py-3">
                 <MethodTag method={b.method} />
-                <code className="font-mono text-sm text-foreground">
+                <code className="min-w-0 break-all font-mono text-sm text-foreground">
                   <span className="text-subtle">{REALMAILPRO.baseUrl.replace("https://", "")}</span>
                   {b.path}
                 </code>
