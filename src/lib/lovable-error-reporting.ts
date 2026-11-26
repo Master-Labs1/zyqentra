@@ -1,70 +1,78 @@
-type LovableErrorOptions = {
-  mechanism?: "manual" | "onerror" | "unhandledrejection" | "react_error_boundary";
-  handled?: boolean;
-  severity?: "error" | "warning" | "info";
-};
+// Captures the original Error out-of-band so server.ts can recover the stack
+// when h3 has already swallowed the throw into a generic 500 Response.
 
-type LovableEvents = {
-  track?: (event: string, properties?: Record<string, unknown>) => string | null;
-  captureException?: (
-    error: unknown,
-    context?: Record<string, unknown>,
-    options?: LovableErrorOptions,
-  ) => void;
-};
+let lastCapturedError: { error: unknown; at: number } | undefined;
+const TTL_MS = 5_000;
 
-declare global {
-  interface Window {
-    __lovableEvents?: LovableEvents;
-    __lovableReportRuntimeError?: (payload: {
-      message: string;
-      stack?: string;
-      filename?: string;
-    }) => void;
-  }
+function record(error: unknown) {
+  lastCapturedError = { error, at: Date.now() };
 }
 
-export function reportLovableError(error: unknown, context: Record<string, unknown> = {}) {
-  if (typeof window === "undefined") return;
-  window.__lovableEvents?.captureException?.(
-    error,
-    {
-      source: "react_error_boundary",
-      route: window.location.pathname,
-      ...context,
-    },
-    {
-      mechanism: "react_error_boundary",
-      handled: false,
-      severity: "error",
-    },
-  );
-  // Prod React does not rethrow boundary-caught errors to window.onerror, so the
-  // editor's telemetry never sees them. Forward to lovable.js's reporting hook,
-  // which is present only inside the editor preview.
-  const stack = error instanceof Error ? error.stack : undefined;
-  window.__lovableReportRuntimeError?.({
-    message: describeThrown(error),
-    ...(stack !== undefined && { stack }),
-    filename: window.location.pathname,
-  });
+// h3's HTTPError serializes to {"status":500,"unhandled":true,"message":"HTTPError"} —
+// no stack, no cause — so a plain console.error(error) reaches the log pipeline with
+// the failure detail stripped. Expand Error-like args into a string that keeps the
+// message, stack, and the full cause chain.
+const CAUSE_DEPTH_LIMIT = 5;
+const DESCRIPTION_LENGTH_LIMIT = 8_000;
+
+export function describeError(error: unknown): string {
+  const parts: string[] = [];
+  let current: unknown = error;
+  for (let depth = 0; depth < CAUSE_DEPTH_LIMIT && current != null; depth++) {
+    if (!(current instanceof Error)) {
+      parts.push(typeof current === "string" ? current : safeStringify(current));
+      break;
+    }
+    const label = depth === 0 ? "" : "caused by: ";
+    const status = describeStatus(current);
+    parts.push(`${label}${current.stack ?? `${current.name}: ${current.message}`}${status}`);
+    current = current.cause;
+  }
+  return parts.join("\n").slice(0, DESCRIPTION_LENGTH_LIMIT);
 }
 
-const MAX_SERIALIZED_LENGTH = 2000;
+function describeStatus(error: Error): string {
+  const { status, statusCode } = error as { status?: unknown; statusCode?: unknown };
+  const value = status ?? statusCode;
+  return typeof value === "number" ? ` (status ${value})` : "";
+}
 
-// Loaders and server fns throw raw Responses and plain objects (a Supabase
-// `{ message, code, details }`), which String() reduces to "[object ...]".
-function describeThrown(error: unknown): string {
-  if (error instanceof Response) {
-    return `Response ${error.status}${error.url ? ` at ${error.url}` : ""}`;
-  }
-  if (error instanceof Error) return error.message;
-  if (typeof error === "string") return error;
-  const { message } = (error ?? {}) as { message?: unknown };
-  if (typeof message === "string" && message.length > 0) return message;
+function safeStringify(value: unknown): string {
   try {
-    return JSON.stringify(error)?.slice(0, MAX_SERIALIZED_LENGTH) ?? String(error);
+    return JSON.stringify(value) ?? String(value);
   } catch {
-    return String(error);
+    return String(value);
   }
+}
+
+function isErrorLike(value: unknown): value is Error {
+  return value instanceof Error;
+}
+
+const originalConsoleError = console.error.bind(console);
+console.error = (...args: unknown[]) => {
+  const expanded = args.map((arg) => {
+    if (!isErrorLike(arg)) return arg;
+    record(arg);
+    return describeError(arg);
+  });
+  originalConsoleError(...expanded);
+};
+
+if (typeof globalThis.addEventListener === "function") {
+  globalThis.addEventListener("error", (event) => record((event as ErrorEvent).error ?? event));
+  globalThis.addEventListener("unhandledrejection", (event) =>
+    record((event as PromiseRejectionEvent).reason),
+  );
+}
+
+export function consumeLastCapturedError(): unknown {
+  if (!lastCapturedError) return undefined;
+  if (Date.now() - lastCapturedError.at > TTL_MS) {
+    lastCapturedError = undefined;
+    return undefined;
+  }
+  const { error } = lastCapturedError;
+  lastCapturedError = undefined;
+  return error;
 }
